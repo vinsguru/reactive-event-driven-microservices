@@ -1,0 +1,53 @@
+#spring:
+#  cloud:
+#    function:
+#      definition: orderEventProducer;processor;digitalDelivery;physicalDelivery
+#    stream:
+#      bindings:
+#        orderEventProducer-out-0:
+#          destination: order-events
+#        processor-in-0:
+#          destination: order-events
+#          group: processor-group
+#        digital-delivery-out:
+#          destination: digital-topic
+#        physical-delivery-out:
+#          destination: physical-topic
+#        digitalDelivery-in-0:
+#          destination: digital-topic
+#          group: digital-group
+#        physicalDelivery-in-0:
+#          destination: physical-topic
+#          group: physical-group
+#      kafka:
+#        binder:
+#          producer-properties:
+#            "key.serializer": org.apache.kafka.common.serialization.StringSerializer
+#          consumer-properties:
+#            "key.deserializer": org.apache.kafka.common.serialization.StringDeserializer
+#            "auto.offset.reset": "earliest"
+spring:
+  cloud:
+    function:
+      definition: orderEventProducer;processor;digitalDelivery;physicalDelivery
+    stream:
+      bindings:
+        orderEventProducer-out-0:
+          destination: order-events
+        processor-in-0:
+          destination: order-events
+          group: processor-group
+        digitalDelivery-in-0:
+          destination: digital-topic
+          group: digital-group
+        physicalDelivery-in-0:
+          destination: physical-topic
+          group: physical-group
+      kafka:
+        binder:
+          producer-properties:
+            "key.serializer": org.apache.kafka.common.serialization.StringSerializer
+          consumer-properties:
+            "key.deserializer": org.apache.kafka.common.serialization.StringDeserializer
+            "auto.offset.reset": "earliest"
+

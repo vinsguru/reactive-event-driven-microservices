@@ -1,0 +1,28 @@
+spring:
+  cloud:
+    function:
+      definition: orderOrchestrator
+    stream:
+      default:
+        producer:
+          useNativeEncoding: true
+      bindings:
+        orderOrchestrator-in-0:
+          destination: payment-response,inventory-response,shipping-response
+          group: order-service-group
+        payment-request-channel:
+          destination: payment-request
+        inventory-request-channel:
+          destination: inventory-request
+        shipping-request-channel:
+          destination: shipping-request
+      kafka:
+        binder:
+          consumer-properties:
+            "value.deserializer": org.springframework.kafka.support.serializer.JsonDeserializer
+            "key.deserializer": org.apache.kafka.common.serialization.StringDeserializer
+            "auto.offset.reset": "earliest"
+            "spring.json.trusted.packages": "com.vinsguru.common.messages.*"
+          producer-properties:
+            "value.serializer": org.springframework.kafka.support.serializer.JsonSerializer
+            "key.serializer": org.apache.kafka.common.serialization.StringSerializer

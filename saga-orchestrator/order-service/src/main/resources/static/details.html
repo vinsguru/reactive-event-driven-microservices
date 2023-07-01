@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <!-- Bootstrap CSS -->
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
+
+    <title>Order Details</title>
+</head>
+<body style="background-color: #efe8e8">
+
+
+    <div class="mt-3 jumbotron text-center">
+        <h1>Order Details</h1>
+    </div>
+        
+    <div class="mt-3 container-lg" id="form">
+
+
+     
+    </div>
+
+<!-- Optional JavaScript; choose one of the two! -->
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script crossorigin="anonymous"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+    // get current order id
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('orderId');
+    console.log(orderId);
+
+    const getOrderDetails = async () => {
+        const url = `/order/${orderId}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        const form = document.getElementById('form');
+        form.append(toOrderDetails(data));
+     //   loadFulfillmentHistory(data.fulfillmentHistory);
+    };
+
+    const toOrderDetails = (order) => {
+        const div = document.createElement('div');
+        const orderDetails = order.order;
+        const fulfillmentHistory = toFulfillmentHistory(order.actions);
+        div.innerHTML = `
+            <div class="card">
+                    <div class="card-header">
+                    Order Id: <b>${orderDetails.orderId}</b>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Product Id: <B>${orderDetails.productId}</B></li>
+                            <li class="list-group-item">Customer Id: <b>${orderDetails.customerId}</b></li>
+                            <li class="list-group-item">Quantity: <B>${orderDetails.quantity}</B></li>
+                            <li class="list-group-item">Unit Price: <B>${orderDetails.unitPrice}</B></li>
+                            <li class="list-group-item">Total Amount: <B>${orderDetails.amount}</B></li>
+                            <li class="list-group-item">Status: <B>${orderDetails.status}</B></li>
+                            <li class="list-group-item">Expected Delivery: <B>${orderDetails.deliveryDate? orderDetails.deliveryDate : ""}</B></li>
+                        </ul>
+                    </div>
+            </div>
+
+            <div class="card mt-3">
+            <h5 class="card-header">Fulfillment History</h5>
+            <div class="card-body">
+                <table class="table table-hover" id="fulfillmentHistory">
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Step</th>
+                        <th>Time</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                       ${fulfillmentHistory}
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+        `;
+       
+        return div;
+    };
+
+    const toFulfillmentHistory = (fulfillmentHistory) => {
+        var t = "";
+        for(i = 0; i < fulfillmentHistory.length; i++){
+            t = t + toHistoryRow(fulfillmentHistory[i]);
+        }
+        return t;
+
+    }
+
+    const toHistoryRow = (history) => {
+        return `    <tr>
+                        <td>${history.id}</td>
+                        <td>${history.action}</td>
+                        <td>${history.createdAt}</td>    
+                    </tr>                                         
+        `;
+    };
+
+window.addEventListener('load', () => getOrderDetails());
+
+</script>
+
+</body>
+</html>

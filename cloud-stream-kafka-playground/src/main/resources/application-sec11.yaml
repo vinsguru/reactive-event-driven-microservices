@@ -1,0 +1,19 @@
+spring:
+  cloud:
+    function:
+      definition: consumer
+    stream:
+      default:
+        producer:
+          useNativeEncoding: true
+      bindings:
+        consumer-in-0:
+          destination: input-topic
+          group: some-group
+      kafka:
+        binder:
+          consumer-properties:
+            "value.deserializer": org.springframework.kafka.support.serializer.JsonDeserializer
+            "auto.offset.reset": "earliest"
+            "group.instance.id": "1"
+            "spring.json.trusted.packages": "com.vinsguru.cloudstreamkafkaplayground.sec11.dto"

@@ -1,0 +1,19 @@
+spring:
+  cloud:
+    function:
+      definition: producer;consumer
+    stream:
+      bindings:
+        consumer-in-0:
+          destination: input-topic
+          group: some-group
+        producer-out-0:
+          destination: input-topic
+      kafka:
+        binder:
+          producer-properties:
+            "key.serializer": org.apache.kafka.common.serialization.StringSerializer
+          consumer-properties:
+            "key.deserializer": org.apache.kafka.common.serialization.StringDeserializer
+            "auto.offset.reset": "earliest"
+            "group.instance.id": "1"

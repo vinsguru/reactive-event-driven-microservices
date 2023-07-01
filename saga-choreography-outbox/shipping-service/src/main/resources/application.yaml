@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    function:
+      definition: processor
+    stream:
+      default:
+        producer:
+          useNativeEncoding: true
+      bindings:
+        processor-in-0:
+          destination: order-events
+          group: shipping-service-group
+        processor-out-0:
+          destination: shipping-events
+      kafka:
+        binder:
+          consumer-properties:
+            "value.deserializer": org.springframework.kafka.support.serializer.JsonDeserializer
+            "key.deserializer": org.apache.kafka.common.serialization.StringDeserializer
+            "auto.offset.reset": "earliest"
+            "spring.json.trusted.packages": "com.vinsguru.common.events.*"
+          producer-properties:
+            "value.serializer": org.springframework.kafka.support.serializer.JsonSerializer
+            "key.serializer": org.apache.kafka.common.serialization.StringSerializer

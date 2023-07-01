@@ -1,0 +1,58 @@
+spring:
+  cloud:
+    function:
+      definition: function
+    stream:
+      bindings:
+        consumer-in-0:
+          destination: input-topic
+          group: some-group
+        function-in-0:
+          destination: input-topic
+          group: some-group
+#---
+#spring:
+#  cloud:
+#    function:
+#      definition: function
+#    stream:
+#      bindings:
+#        consumer-in-0:
+#          destination: input-topic
+#          group: some-group
+#        function-in-0:
+#          destination: input-topic
+#          group: some-group
+#      kafka:
+#        binder:
+#          #configuration:
+#          #producer-properties:
+#          consumer-properties:
+#            "group.instance.id": "123"
+#---
+#spring:
+#  cloud:
+#    function:
+#      definition: consumer
+#    stream:
+#      bindings:
+#        consumer-in-0:
+#          destination: input-topic
+#          group: some-group
+#        function-in-0:
+#          destination: input-topic
+#          group: some-group
+#      kafka:
+#        bindings:
+#          function-in-0:
+#            consumer:
+#              configuration:
+#                "group.instance.id": "567"
+#          consumer-in-0:
+#            consumer:
+#              configuration:
+#                "group.instance.id": "768"
+
+
+
+

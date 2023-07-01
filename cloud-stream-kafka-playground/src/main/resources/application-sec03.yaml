@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    function:
+      definition: producer;consumer;processor
+    stream:
+      bindings:
+        consumer-in-0:
+          destination: output-topic
+          group: consumer-group
+        processor-in-0:
+          destination: input-topic
+          group: processor-group
+        processor-out-0:
+          destination: output-topic
+        producer-out-0:
+          destination: input-topic

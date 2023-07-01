@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    function:
+      definition: consumer
+    stream:
+      bindings:
+        consumer-in-0:
+          destination: input-topic1,input-topic2
+          group: some-group

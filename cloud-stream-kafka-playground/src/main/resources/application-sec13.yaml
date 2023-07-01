@@ -1,0 +1,20 @@
+spring:
+  cloud:
+    function:
+      definition: producer
+    stream:
+      bindings:
+        producer-out-0:
+          destination: input-topic
+      kafka:
+        binder:
+          producer-properties:
+            "key.serializer": org.apache.kafka.common.serialization.StringSerializer
+          consumer-properties:
+            "key.deserializer": org.apache.kafka.common.serialization.StringDeserializer
+            "auto.offset.reset": "earliest"
+            "group.instance.id": "1"
+        bindings:
+          producer-out-0:
+            producer:
+              recordMetadataChannel: senderResults

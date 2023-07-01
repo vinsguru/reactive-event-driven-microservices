@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <!-- Bootstrap CSS -->
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
+
+    <title>Order Details</title>
+</head>
+<body style="background-color: #efe8e8">
+
+
+<div class="jumbotron text-center">
+    <h1>Order Details</h1>
+</div>
+
+<div class="container-lg" id="form">
+
+</div>
+
+<!-- Optional JavaScript; choose one of the two! -->
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script crossorigin="anonymous"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+    // get current order id
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('orderId');
+    console.log(orderId);
+
+    const getOrderDetails = async () => {
+        const url = `/order/${orderId}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        const form = document.getElementById('form');
+        form.append(toOrderDetails(data));
+    };
+
+    const toOrderDetails = (orderDetailsResponse) => {
+        const div = document.createElement('div');
+        const orderDetails = orderDetailsResponse.order;
+        const paymentDetails = orderDetailsResponse.payment;
+        const inventoryDetails = orderDetailsResponse.inventory;
+        div.innerHTML = `
+            <div class="card">
+                    <div class="card-header">
+                    Order Id: <b>${orderDetails.orderId}</b>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Product Id: <B>${orderDetails.productId}</B></li>
+                            <li class="list-group-item">Customer Id: <b>${orderDetails.customerId}</b></li>
+                            <li class="list-group-item">Quantity: <B>${orderDetails.quantity}</B></li>
+                            <li class="list-group-item">Unit Price: <B>${orderDetails.unitPrice}</B></li>
+                            <li class="list-group-item">Total Amount: <B>${orderDetails.amount}</B></li>
+                            <li class="list-group-item">Status: <B>${orderDetails.status}</B></li>
+                            <li class="list-group-item">Expected Delivery: <B>${orderDetails.deliveryDate? orderDetails.deliveryDate : ""}</B></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col">
+                        <div class="card">
+                            <h5 class="card-header">Payment Details</h5>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Status: <B>${paymentDetails.status? paymentDetails.status : ""}</B></li>
+                                    <li class="list-group-item">Message: <b>${paymentDetails.message? paymentDetails.message : ""}</b></li>
+                                </ul>
+                            </div>
+                        </div>
+                </div>
+                <div class="col">
+                        <div class="card">
+                            <h5 class="card-header">Inventory Details</h5>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Status: <B>${inventoryDetails.status? inventoryDetails.status : ""}</B></li>
+                                    <li class="list-group-item">Message: <b>${inventoryDetails.message? inventoryDetails.message : ""}</b></li>
+                                </ul>
+                            </div>
+                        </div>
+                </div>                                            
+        `;
+        return div;
+    };
+
+window.addEventListener('load', () => getOrderDetails());
+
+
+</script>
+
+</body>
+</html>
